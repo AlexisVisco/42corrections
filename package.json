@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "lowdb": "^1.0.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "stats-lite": "^2.2.0"
   }
 }
