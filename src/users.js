@@ -32,7 +32,7 @@ async function createUsersData(campus, year) {
 
     let users = []
 
-    for (u in db) {
+    for (let u in db) {
         const user = await requests.user(db[u].login)
 
         if (user["cursus_users"].some(e => e["cursus_id"] === 1)) {
@@ -52,4 +52,14 @@ async function createUsersData(campus, year) {
 
 }
 
-module.exports = {createUsersList, createUsersData}
+function list(campus, year) {
+    const tadapter = new FileSync(`db/data_${campus}_${year}.json`)
+    const dbFull = low(tadapter).getState()
+    let users = []
+    for (let u in dbFull) {
+        users.push(dbFull[u])
+    }
+    return users
+}
+
+module.exports = {createUsersList, createUsersData, list}
