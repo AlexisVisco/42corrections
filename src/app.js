@@ -5,7 +5,7 @@ const requests = require("./requests");
 const users = require("./users");
 const balancer = require("./balancer");
 const stats = require("stats-lite")
-
+const printf = require('printf');
 
 async function retrieveCorrectors(correctorsOccurence, teamId) {
     let hasFeedback = false
@@ -72,14 +72,19 @@ balancer.init().then(async function () {
     let listUsers = users.list(9, 2017)
     let index = 1
 
-    for (let u of listUsers) {
-        process.stdout.write(u.login + "\t\t" +  index + "/" +  listUsers.length)
-        userCorrections[u.login] = await retrieveUserStats(u)
-        process.stdout.write("\tOK\n")
-        index++
-    }
     const adapter = new FileSync(`db/corrections_9_2017.json`)
     const db = low(adapter)
+
+    db.defaults({corrections: []}).write()
+
+    for (let u of listUsers) {
+        process.stdout.write(printf('%-10s %-8s', u.login,  index + "/" +  listUsers.length))
+        db.get('corrections')
+            .push(await retrieveUserStats(u))
+            .write()
+        process.stdout.write(printf("  OK\n"))
+        index++
+    }
 
     db.defaults(userCorrections).write()
 })

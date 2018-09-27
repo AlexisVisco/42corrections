@@ -4,7 +4,7 @@ const config = require("./config");
 const size = process.env.CLIENT_UID.split(",").length
 
 const uids = process.env.CLIENT_UID.split(",")
-const secrets = process.env.CLIENT_SECRET.split(",")
+const secrets = process.env.CLIENT_SEC.split(",")
 
 let index = 0
 
